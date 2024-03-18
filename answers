@@ -1,0 +1,168 @@
+1. A trie is unique because it organizes data based on prefixes rather than comparisons of values like other tree structures. This makes it efficient for tasks involving string searches and dynamic sets of keys, especially when dealing with large collections of strings with common prefixes.
+2. Terminal nodes in a trie mark the end of a word or key. They're necessary to distinguish complete words from prefixes. Without them, searches and insertions would be unreliable, leading to ambiguity and incorrect results.
+3.  (root)
+          /  |  \
+         t   h   s
+        / \   \   \
+       r   r   e   t
+       |   |   |   |
+       e   e   a   a
+           |   |   | 
+           e   p   c
+                   |
+                   k
+4. An Abstract Data Type (ADT) is a conceptual framework defining operations on data without specifying how they're carried out. They help separate the logic of data structures from their implementation, streamlining software design. ADTs encourage standardized communication among developers and allow focus on problem-solving rather than implementation specifics.
+5. Methods of ADTs don't have associated time or memory complexity because ADTs define abstract concepts rather than concrete implementations. The complexity depends on how a specific ADT is implemented, varying based on factors like data structure choice and algorithm design.
+6. A binary heap is a concrete implementation of the Priority Queue Abstract Data Type (ADT).
+7. The "enqueue" operation adds elements to the heap, potentially using the "percolate up" process to maintain the heap property. Conversely, the "dequeue" operation removes elements from the heap, potentially utilizing the "percolate down" process to preserve the heap property.
+8. The "heap property" states that in a binary heap, each parent node has a value that is either greater than or equal to (for a max-heap) or less than or equal to (for a min-heap) the values of its children.
+9.a.         36
+           /    \
+         39      46
+        / \     /  \
+       44  48  60   83
+      / \ / \ / \  / \
+     53 61 52 89 90 65 
+b. {47, 48, 30, 78, 42, 54, 13, 93, 60, 89, 29, 68, 36, 87}
+
+Exploration : 
+
+
+a. The breadth (branching factor) of a binary trie is 2, as each node can have at most two children.
+
+b. The breadth (branching factor) of a trie that uses the English language alphabet is 26, as there are 26 characters in the English alphabet.
+
+c. The breadth (branching factor) of a trie with an infinitely long alphabet is technically infinite. However, in practical implementations, it's often limited by the available character set or the maximum number of characters allowed in a given context.
+
+d. The worst-case time complexity of searching through a trie is O(m), where m is the length of the search key. This is because the search time depends on the length of the key being searched.
+
+e. Searching for a word in a trie representing the Merriam-Webster Dictionary is O(1) in a practical sense because the time complexity is not directly dependent on the size of the dictionary but rather on the length of the search key. Since dictionary words typically have a bounded length, the search time remains constant regardless of the dictionary's size.
+
+2.a. *
+            |
+            t
+           / \
+          r   e
+         /     \
+        *       e
+               / \
+              e   e
+             /     \
+            *       *
+2.b. The worst-case time complexity of searching for a word in a radix tree is O(m), where m is the length of the search key. This is because the search involves traversing down the tree from the root to the leaf node corresponding to the search key.
+
+The best-case time complexity of searching for a word in a radix tree is O(1). This occurs when the search key is not present in the tree, or when the tree is structured in such a way that the search key is found at the root node.
+
+2.c. The memory complexity of a radix tree depends on the number of nodes and the size of the strings stored in the tree. Assuming nodes take up constant space regardless of the size of the string, the memory complexity of a radix tree is O(n), where n is the total number of nodes in the tree. Each node in the tree stores a constant amount of information (e.g., pointers, characters), so the memory usage scales linearly with the number of nodes.
+3. Adding a new word to a trie involves creating a node for each character of the word. In contrast, adding a new word to a radix tree may involve merging nodes if they have only one child, allowing nodes to represent entire words.
+4. Choose a trie over a radix tree for efficient prefix searches and memory efficiency with limited alphabets. Choose a radix tree over a trie for memory efficiency with long keys, reduced redundancy, and flexible key representation.
+5.a. before
+    74
+  29  77
+62  81 
+after
+    74
+  29  77
+62  81 66
+
+b.  74
+  29  77
+66  81 62
+c. 
+    74
+  29  77
+66  81 62
+
+6.a. When we poll() from the min heap, the number returned is 5, as it's the smallest element in the heap.
+b. 
+        99
+    27
+        93
+99
+            80
+        47
+            76
+    14
+            74
+        65
+c. 
+        27
+    99
+        93
+99
+            80
+        47
+            76
+    14
+            74
+        65
+d. 
+        27
+    99
+        93
+99
+            80
+        47
+            76
+    14
+            74
+        65
+
+Challenge : 
+
+1.a. The interviewer is asking for the implemention of a class that provides autocompletion functionality for variable names in an IDE. This class should allow adding variables, represented as strings, and finding variables that match a given prefix.
+
+b. The constructor for the Autocompleter class initializes the autocompleter with an array of variable names. It iterates through each variable name in the array and adds it to the autocompleter using the addVariable() method.
+
+c. 1. Start with an empty ArrayList to store matching variables.
+2. Traverse the trie starting from the root, following the path defined by the prefix.
+3. If the prefix is not found in the trie, return the empty ArrayList.
+4. Once the prefix is found, perform a depth-first search to collect all variable names starting from that prefix.
+5. Add each variable name to the ArrayList.
+6. Return the ArrayList containing matching variables.
+
+d. public ArrayList<String> find(String prefix) {
+    ArrayList<String> matches = new ArrayList<>();
+    Node current = rootNode;
+    // Traverse the trie to find the prefix
+    for (char c : prefix.toCharArray()) {
+        boolean found = false;
+        for (Node child : current.children) {
+            if (child.value == c) {
+                current = child;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            return matches;
+        }
+    }
+    dfs(current, prefix, matches);
+    return matches;
+}
+
+private void dfs(Node node, String prefix, ArrayList<String> matches) {
+    if (node.value == '*') {
+        matches.add(prefix);
+    }
+    for (Node child : node.children) {
+        dfs(child, prefix + child.value, matches);
+    }
+}
+
+e. yes
+g. The final implementation differs from the pseudocode in handling the traversal of the trie and collecting matching variables. It includes a depth-first search (DFS) approach to traverse the trie and collect matching variables recursively.
+
+3.a. The percolate up process stops when either:
+      -The current node becomes the root node (no parent).
+      -The parent node has a lower priority than the current node.
+
+4.a. To determine if the current node has children, we can check if the indices of its potential children fall within the bounds of the heap array (array) and also if the children actually exist, i.e., if the indices are less than the current size of the heap.
+
+
+
+
+
+
+
